@@ -1,13 +1,14 @@
 from flask import Flask, request
 from constant import PATH
 import numpy as np
-from helper import success, badRequest
-from recognition import getFaceLocations,drawRectangle,getFaceEncoding
+from http_helper import success, badRequest
+from recognition import getFaceLocations, drawRectangle, getFaceEncoding
 from cv2 import cv2
 import dlib
 
 app = Flask(__name__)
-print("USE GPU: "+str(dlib.DLIB_USE_CUDA))
+print("USE GPU: " + str(dlib.DLIB_USE_CUDA))
+
 
 @app.route('/')
 def index():
@@ -24,12 +25,12 @@ def checkFace():
 
     if len(faceLocations) > 1:
         return badRequest('There should be one face in the image!')
-    if len(faceLocations)<1:
+    if len(faceLocations) < 1:
         return badRequest('No face found in the image!')
 
-    drawRectangle(img,faceLocations[0])
-    cv2.imwrite("images/newImage.png",img)
-    faceEncoding = getFaceEncoding(img,faceLocations)
+    drawRectangle(img, faceLocations[0])
+    cv2.imwrite("images/newImage.png", img)
+    faceEncoding = getFaceEncoding(img, faceLocations)
 
     return success("OLDUOLDU")
 
