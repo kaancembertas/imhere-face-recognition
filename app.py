@@ -1,3 +1,5 @@
+import base64
+
 from flask import Flask, request
 from constant import PATH
 import numpy as np
@@ -5,6 +7,7 @@ from http_helper import success, badRequest
 from recognition import getFaceLocations, drawRectangle, getFaceEncoding
 from cv2 import cv2
 import dlib
+import firebase
 
 app = Flask(__name__)
 print("USE GPU: " + str(dlib.DLIB_USE_CUDA))
@@ -29,10 +32,9 @@ def checkFace():
         return badRequest('No face found in the image!')
 
     drawRectangle(img, faceLocations[0])
-    cv2.imwrite("images/newImage.png", img)
-    faceEncoding = getFaceEncoding(img, faceLocations)
-
+    retval, buffer = cv2.imencode(".png", img)
+    firebase.uploadProfilePicture("deneme2.png", buffer)
     return success("OLDUOLDU")
 
 
-app.run(host="localhost", port=5000, debug=True)
+app.run(host="localhost", port=5000, debug=False)
