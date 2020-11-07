@@ -1,27 +1,15 @@
-import pyrebase
+from firebase_admin import credentials, initialize_app, storage
 
-
-def getFirebaseConfig():
-    #INPUT
-    print("Enter firebase project id: ")
-    projectId = "im-here-mobile"
-    print("Enter firebase api key: ")
-    apiKey = "AIzaSyCqA9BZHpZIDjsjVHwi4XZLSkavN6TZZaA"
-    return {
-        "apiKey": apiKey,
-        "authDomain": projectId + ".firebaseapp.com",
-        "storageBucket": projectId + ".appspot.com",
-        "serviceAccount": "credentials/firebaseCredentials.json",
-        "databaseURL": "https://databaseName.firebaseio.com",
-    }
-
-
-firebase = pyrebase.initialize_app(getFirebaseConfig())
+storageBucket = 'im-here-mobile.appspot.com'
+cred = credentials.Certificate("credentials/firebaseCredentials.json")
+initialize_app(cred, {'storageBucket': storageBucket})
+bucket = storage.bucket()
 
 
 def uploadProfilePicture(filename, image):
-    storage = firebase.storage()
     path = "profilePictures/" + filename
-    storage.child(path).put(image)
-    #url = storage.child(path).get_url()
-    #return url
+    blob = bucket.blob(path)
+    blob.upload_from_string(image,content_type='image/png')
+    blob.make_public()
+
+    return blob.public_url

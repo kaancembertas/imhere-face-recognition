@@ -11,3 +11,8 @@ def success(dictionaryData={}):
 def badRequest(errorMessage=''):
     response = {"errorMessage": errorMessage}
     return make_response(jsonify(response), 400)
+
+
+def notFound(errorMessage=''):
+    response = {"errorMessage": errorMessage}
+    return make_response(jsonify(response), 404)

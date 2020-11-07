@@ -3,7 +3,7 @@ import base64
 from flask import Flask, request
 from constant import PATH
 import numpy as np
-from http_helper import success, badRequest
+from http_helper import success, badRequest,notFound
 from recognition import getFaceLocations, drawRectangle, getFaceEncoding
 from cv2 import cv2
 import dlib
@@ -21,20 +21,28 @@ def index():
 @app.route(PATH + '/checkFace', methods=['POST'])
 def checkFace():
     imageFile = request.files["image"].read()
-    img = np.frombuffer(imageFile, np.uint8)
-    img = cv2.imdecode(img, cv2.IMREAD_COLOR)
+    email = request.form["email"]
 
-    faceLocations = getFaceLocations(img)
+    image = np.frombuffer(imageFile, np.uint8)
+    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+
+    faceLocations = getFaceLocations(image)
 
     if len(faceLocations) > 1:
         return badRequest('There should be one face in the image!')
     if len(faceLocations) < 1:
-        return badRequest('No face found in the image!')
+        return notFound('No face found in the image!')
 
-    drawRectangle(img, faceLocations[0])
-    retval, buffer = cv2.imencode(".png", img)
-    firebase.uploadProfilePicture("deneme2.png", buffer)
-    return success("OLDUOLDU")
+    # If face found, draw a rectangle around it
+    drawRectangle(image, faceLocations[0])
+
+    # Encode image to upload
+    isSuccess, encoded_image = cv2.imencode('.png', image)
+    byteImage = encoded_image.tobytes()
+
+    # Upload to firebase and get url of it
+    image_url = firebase.uploadProfilePicture(email+".png", byteImage)
+    return success({"image_url": image_url})
 
 
 app.run(host="localhost", port=5000, debug=False)
