@@ -6,6 +6,7 @@ from recognition import getFaceLocations, drawRectangle, getFaceEncoding
 from cv2 import cv2
 import dlib
 import firebase
+import json
 
 app = Flask(__name__)
 print("USE GPU: " + str(dlib.DLIB_USE_CUDA))
@@ -34,8 +35,14 @@ def checkFace():
 
     # Get encoding of the face
     faceEncoding = getFaceEncoding(image, faceLocations)
-    # faceEncoding = json.dumps(faceEncoding.tolist())
-    # print(faceEncoding)
+    faceEncoding = faceEncoding.tolist()
+    faceEncoding = json.dumps(faceEncoding)
+
+
+    # To create numpy array from string
+    #faceEncoding = json.loads(faceEncoding)
+    #faceEncoding = np.asarray(faceEncoding)
+
 
     # Encode image to upload
     isSuccess, encoded_image = cv2.imencode('.png', image)
@@ -46,7 +53,7 @@ def checkFace():
 
     return success({
         "image_url": image_url,
-        "face_encodings": faceEncoding
+        "face_encoding": faceEncoding
     })
 
 
