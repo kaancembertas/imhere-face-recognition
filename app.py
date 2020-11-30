@@ -1,12 +1,13 @@
 from flask import Flask, request
-from constant import PATH, PORT
+from config import PATH, PORT, BACKEND_API_PATH
 import numpy as np
-from http_helper import success, badRequest, notFound
-from recognition import getFaceLocations, drawRectangle, getFaceEncoding
+from recognition import getFaceLocations, drawRectangle, getFaceEncoding, getFaceEncodings, compareEncodings
+from http_helper import success, badRequest, notFound, customErrorResponse
 from cv2 import cv2
 import dlib
 import firebase
 import json
+import requests
 
 app = Flask(__name__)
 print("USE GPU: " + str(dlib.DLIB_USE_CUDA))
@@ -38,12 +39,6 @@ def checkFace():
     faceEncoding = faceEncoding.tolist()
     faceEncoding = json.dumps(faceEncoding)
 
-
-    # To create numpy array from string
-    #faceEncoding = json.loads(faceEncoding)
-    #faceEncoding = np.asarray(faceEncoding)
-
-
     # Encode image to upload
     isSuccess, encoded_image = cv2.imencode('.png', image)
     byteImage = encoded_image.tobytes()
@@ -55,6 +50,43 @@ def checkFace():
         "image_url": image_url,
         "face_encoding": faceEncoding
     })
+
+
+@app.route(PATH + '/addAttendence', methods=['POST'])
+def addAttendence():
+    lectureCode = request.form["lectureCode"]
+    imageFile = request.files["image"].read()
+    image = np.frombuffer(imageFile, np.uint8)
+    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+
+    faceinfo_response = requests.get(BACKEND_API_PATH + "/FaceInfo/" + lectureCode)
+
+    # Check FaceInfo service is Ok
+    if faceinfo_response.status_code != 200:
+        return customErrorResponse(faceinfo_response.text, faceinfo_response.status_code)
+
+    knownFaceInfos = faceinfo_response.json()
+    joinedStudentsEncodings = getFaceEncodings(image)
+    joinedUsers = []
+
+    for faceInfoObj in knownFaceInfos:
+        user_id = faceInfoObj['user_id']
+
+        # Casting face encoding string to numpy ndarray
+        faceEncoding = faceInfoObj['face_encoding']
+        faceEncoding = json.loads(faceEncoding)
+
+        # Face Encoding of known user (user_id)
+        faceEncoding = np.asarray(faceEncoding)
+
+        # Check the user is in the image
+        isUserJoined = compareEncodings(faceEncoding,joinedStudentsEncodings)
+
+        if isUserJoined:
+            joinedUsers.append(user_id)
+
+    print(joinedUsers)
+    return "OLDI"
 
 
 app.run(host="0.0.0.0", port=PORT, debug=False)

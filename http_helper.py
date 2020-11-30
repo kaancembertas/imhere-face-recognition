@@ -1,4 +1,5 @@
 from flask import jsonify, make_response
+import json
 
 
 def success(dictionaryData={}):
@@ -16,3 +17,10 @@ def badRequest(errorMessage=''):
 def notFound(errorMessage=''):
     response = {"errorMessage": errorMessage}
     return make_response(jsonify(response), 404)
+
+
+def customErrorResponse(text, statusCode):
+    if not bool(text):
+        return make_response('', statusCode)
+
+    return make_response(json.loads(text), statusCode)

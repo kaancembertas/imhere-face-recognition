@@ -1,5 +1,11 @@
 import face_recognition
 from cv2 import cv2
+import numpy as np
+from config import DISTANCE_BOUNDARY
+
+def calculateEucledianDistance(vector1, vector2):
+    return np.linalg.norm(vector1-vector2)
+
 
 
 def getFaceLocations(faceImg):
@@ -10,9 +16,17 @@ def getFaceEncoding(faceImg, faceLocations):
     return face_recognition.face_encodings(faceImg, known_face_locations=faceLocations)[0]
 
 
-def compareEncodings(faceImg1, faceImg2):
-    return face_recognition.compare_faces([faceImg1], faceImg2)[0]
+def getFaceEncodings(faceImg):
+    return face_recognition.face_encodings(faceImg)
 
+
+def compareEncodings(faceEncoding, knownFaceEncodings):
+    for knownFaceEncoding in knownFaceEncodings:
+        distance = calculateEucledianDistance(faceEncoding,knownFaceEncoding)
+        print(distance)
+        if distance < DISTANCE_BOUNDARY:
+            return True
+    return False
 
 # Draws a rectangle to face
 def drawRectangle(image, faceLoction):
