@@ -23,7 +23,6 @@ def getFaceEncodings(faceImg):
 def compareEncodings(faceEncoding, knownFaceEncodings):
     for knownFaceEncoding in knownFaceEncodings:
         distance = calculateEucledianDistance(faceEncoding,knownFaceEncoding)
-        print(distance)
         if distance < DISTANCE_BOUNDARY:
             return True
     return False

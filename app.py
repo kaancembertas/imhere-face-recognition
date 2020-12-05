@@ -8,6 +8,7 @@ import dlib
 import firebase
 import json
 import requests
+from flask import jsonify
 
 app = Flask(__name__)
 print("USE GPU: " + str(dlib.DLIB_USE_CUDA))
@@ -54,18 +55,26 @@ def checkFace():
 
 @app.route(PATH + '/addAttendence', methods=['POST'])
 def addAttendence():
-    lectureCode = request.form["lectureCode"]
+    token = request.headers["Authorization"].split()[1]
+    requestHeaders = {
+        'Authorization': 'Bearer ' + token
+    }
+
     imageFile = request.files["image"].read()
     image = np.frombuffer(imageFile, np.uint8)
     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    lectureCode = request.form["lectureCode"]
+    week = request.form["week"]
 
-    faceinfo_response = requests.get(BACKEND_API_PATH + "/FaceInfo/" + lectureCode)
+    faceinfoResponse = requests.get(
+        BACKEND_API_PATH + "/FaceInfo/" + lectureCode,
+        headers=requestHeaders)
 
     # Check FaceInfo service is Ok
-    if faceinfo_response.status_code != 200:
-        return customErrorResponse(faceinfo_response.text, faceinfo_response.status_code)
+    if faceinfoResponse.status_code != 200:
+        return customErrorResponse(faceinfoResponse.text, faceinfoResponse.status_code)
 
-    knownFaceInfos = faceinfo_response.json()
+    knownFaceInfos = faceinfoResponse.json()
     joinedStudentsEncodings = getFaceEncodings(image)
     joinedUsers = []
 
@@ -80,13 +89,27 @@ def addAttendence():
         faceEncoding = np.asarray(faceEncoding)
 
         # Check the user is in the image
-        isUserJoined = compareEncodings(faceEncoding,joinedStudentsEncodings)
+        isUserJoined = compareEncodings(faceEncoding, joinedStudentsEncodings)
 
         if isUserJoined:
             joinedUsers.append(user_id)
 
-    print(joinedUsers)
-    return "OLDI"
+    addAttendenceBody = {
+        'lectureCode': lectureCode,
+        'week': int(week),
+        'userIds': joinedUsers
+    }
+    print(addAttendenceBody)
+    addAttendenceResponse = requests.post(
+        BACKEND_API_PATH + '/Attendence/AddAttendence',
+        headers=requestHeaders,
+        json=addAttendenceBody
+    )
+
+    if addAttendenceResponse.status_code != 204:
+        return customErrorResponse(addAttendenceResponse.text, addAttendenceResponse.status_code)
+
+    return success()
 
 
 app.run(host="0.0.0.0", port=PORT, debug=False)
