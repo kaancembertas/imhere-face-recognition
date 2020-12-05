@@ -1,7 +1,7 @@
 from flask import Flask, request
 from config import PATH, PORT, BACKEND_API_PATH
 import numpy as np
-from recognition import getFaceLocations, drawRectangle, getFaceEncoding, getFaceEncodings, compareEncodings
+import recognition
 from http_helper import success, badRequest, notFound, customErrorResponse
 from cv2 import cv2
 import dlib
@@ -22,10 +22,9 @@ def index():
 @app.route(PATH + '/checkFace', methods=['POST'])
 def checkFace():
     imageFile = request.files["image"].read()
-    image = np.frombuffer(imageFile, np.uint8)
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    image = recognition.decodeImage(imageFile)
 
-    faceLocations = getFaceLocations(image)
+    faceLocations = recognition.getFaceLocations(image)
 
     if len(faceLocations) > 1:
         return badRequest('There should be one face in the image!')
@@ -33,19 +32,16 @@ def checkFace():
         return notFound('No face found in the image!')
 
     # If face found, draw a rectangle around it
-    drawRectangle(image, faceLocations[0])
+    recognition.drawRectangle(image, faceLocations[0])
 
     # Get encoding of the face
-    faceEncoding = getFaceEncoding(image, faceLocations)
+    faceEncoding = recognition.getFaceEncoding(image, faceLocations)
     faceEncoding = faceEncoding.tolist()
     faceEncoding = json.dumps(faceEncoding)
 
-    # Encode image to upload
-    isSuccess, encoded_image = cv2.imencode('.png', image)
-    byteImage = encoded_image.tobytes()
-
+    encodedImage = recognition.encodeImage(image)
     # Upload to firebase and get url of it
-    image_url = firebase.uploadProfilePicture(byteImage)
+    image_url = firebase.uploadProfilePicture(encodedImage)
 
     return success({
         "image_url": image_url,
@@ -56,15 +52,12 @@ def checkFace():
 @app.route(PATH + '/addAttendence', methods=['POST'])
 def addAttendence():
     token = request.headers["Authorization"].split()[1]
-    requestHeaders = {
-        'Authorization': 'Bearer ' + token
-    }
-
     imageFile = request.files["image"].read()
-    image = np.frombuffer(imageFile, np.uint8)
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
     lectureCode = request.form["lectureCode"]
     week = request.form["week"]
+
+    requestHeaders = {'Authorization': 'Bearer ' + token}
+    image = recognition.decodeImage(imageFile)
 
     faceinfoResponse = requests.get(
         BACKEND_API_PATH + "/FaceInfo/" + lectureCode,
@@ -75,7 +68,8 @@ def addAttendence():
         return customErrorResponse(faceinfoResponse.text, faceinfoResponse.status_code)
 
     knownFaceInfos = faceinfoResponse.json()
-    joinedStudentsEncodings = getFaceEncodings(image)
+    faceLocations = recognition.getFaceLocations(image)
+    joinedStudentsEncodings = recognition.getFaceEncodings(image, faceLocations)
     joinedUsers = []
 
     for faceInfoObj in knownFaceInfos:
@@ -89,15 +83,20 @@ def addAttendence():
         faceEncoding = np.asarray(faceEncoding)
 
         # Check the user is in the image
-        isUserJoined = compareEncodings(faceEncoding, joinedStudentsEncodings)
+        isUserJoined = recognition.compareEncodings(faceEncoding, joinedStudentsEncodings)
 
         if isUserJoined:
             joinedUsers.append(user_id)
 
+    recognition.drawRectangles(image, faceLocations)
+    encodedImage = recognition.encodeImage(image)
+    image_url = firebase.uploadAttendencePicture(encodedImage)
+
     addAttendenceBody = {
         'lectureCode': lectureCode,
         'week': int(week),
-        'userIds': joinedUsers
+        'userIds': joinedUsers,
+        'image_url': image_url
     }
     print(addAttendenceBody)
     addAttendenceResponse = requests.post(
@@ -105,7 +104,6 @@ def addAttendence():
         headers=requestHeaders,
         json=addAttendenceBody
     )
-
     if addAttendenceResponse.status_code != 204:
         return customErrorResponse(addAttendenceResponse.text, addAttendenceResponse.status_code)
 
