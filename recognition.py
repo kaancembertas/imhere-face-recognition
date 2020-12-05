@@ -3,9 +3,9 @@ from cv2 import cv2
 import numpy as np
 from config import DISTANCE_BOUNDARY
 
-def calculateEucledianDistance(vector1, vector2):
-    return np.linalg.norm(vector1-vector2)
 
+def calculateEucledianDistance(vector1, vector2):
+    return np.linalg.norm(vector1 - vector2)
 
 
 def getFaceLocations(faceImg):
@@ -22,13 +22,14 @@ def getFaceEncodings(faceImg):
 
 def compareEncodings(faceEncoding, knownFaceEncodings):
     for knownFaceEncoding in knownFaceEncodings:
-        distance = calculateEucledianDistance(faceEncoding,knownFaceEncoding)
+        distance = calculateEucledianDistance(faceEncoding, knownFaceEncoding)
         if distance < DISTANCE_BOUNDARY:
             return True
     return False
 
+
 # Draws a rectangle to face
-def drawRectangle(image, faceLoction):
-    top, right, bottom, left = faceLoction
+def drawRectangle(image, faceLocation):
+    top, right, bottom, left = faceLocation
     cv2.rectangle(image, (left, top), (right, bottom), (255, 0, 0), 2)
     return image
