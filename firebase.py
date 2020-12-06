@@ -7,7 +7,7 @@ initialize_app(cred, {'storageBucket': storageBucket})
 bucket = storage.bucket()
 
 
-def uploadImage(image,folderName):
+def uploadImage(image, folderName):
     filename = str(uuid.uuid4()) + '.png'
     path = folderName+"/" + filename
     blob = bucket.blob(path)
@@ -19,7 +19,7 @@ def uploadImage(image,folderName):
 
 def uploadProfilePicture(image):
     folderName = "profilePictures"
-    return uploadImage(image,folderName)
+    return uploadImage(image, folderName)
 
 
 def uploadAttendencePicture(image):

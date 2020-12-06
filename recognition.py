@@ -1,7 +1,7 @@
 import face_recognition
 from cv2 import cv2
 import numpy as np
-from config import DISTANCE_BOUNDARY
+from config import DISTANCE_TOLERANCE
 
 
 def calculateEucledianDistance(vector1, vector2):
@@ -23,7 +23,7 @@ def getFaceEncodings(faceImg, faceLocations):
 def compareEncodings(faceEncoding, knownFaceEncodings):
     for knownFaceEncoding in knownFaceEncodings:
         distance = calculateEucledianDistance(faceEncoding, knownFaceEncoding)
-        if distance < DISTANCE_BOUNDARY:
+        if distance < DISTANCE_TOLERANCE:
             return True
     return False
 
