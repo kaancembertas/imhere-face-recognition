@@ -28,6 +28,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="514b6503-db03-402a-8fbf-fcf3af72fe6f" />
   <component name="ProjectId" id="1jVbnm2VKVEa2wA40d8TTTWTI4L" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -40,7 +41,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../imhere-face-recognition-demo" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -50,7 +51,7 @@
       <recent name="C:\Users\Kaan-PC\Desktop\imhere_face_recognition\credentials" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.app">
+  <component name="RunManager" selected="Python.demo">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="imhere_face_recognition" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -67,6 +68,25 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="demo" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="imhere_face_recognition" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/demo.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -98,9 +118,11 @@
     <list>
       <item itemvalue="Python.app" />
       <item itemvalue="Python.recognition" />
+      <item itemvalue="Python.demo" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.demo" />
         <item itemvalue="Python.app" />
         <item itemvalue="Python.recognition" />
       </list>
@@ -149,6 +171,10 @@
       <workItem from="1607176484513" duration="11542000" />
       <workItem from="1607248361643" duration="753000" />
       <workItem from="1607263584519" duration="3556000" />
+      <workItem from="1607283069971" duration="763000" />
+      <workItem from="1607338393386" duration="679000" />
+      <workItem from="1609178412623" duration="314000" />
+      <workItem from="1609180948546" duration="1557000" />
     </task>
     <servers />
   </component>
@@ -186,37 +212,37 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="827" y="280" key="EnvironmentVariablesDialog/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1603898555434" />
-    <state x="740" y="266" key="FileChooserDialogImpl" timestamp="1603913703360">
+    <state x="740" y="266" key="FileChooserDialogImpl" timestamp="1609178727422">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="740" y="266" key="FileChooserDialogImpl/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1603913703360" />
-    <state width="1877" height="155" key="GridCell.Tab.0.bottom" timestamp="1607272943196">
+    <state x="740" y="266" key="FileChooserDialogImpl/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1609178727422" />
+    <state width="1877" height="155" key="GridCell.Tab.0.bottom" timestamp="1609187450908">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state width="1877" height="155" key="GridCell.Tab.0.bottom/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1607265671494" />
-    <state width="1877" height="155" key="GridCell.Tab.0.bottom/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1607272943196" />
-    <state width="1877" height="155" key="GridCell.Tab.0.center" timestamp="1607272943196">
+    <state width="1877" height="155" key="GridCell.Tab.0.bottom/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1609187450908" />
+    <state width="1877" height="155" key="GridCell.Tab.0.center" timestamp="1609187450908">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state width="1877" height="155" key="GridCell.Tab.0.center/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1607265671494" />
-    <state width="1877" height="155" key="GridCell.Tab.0.center/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1607272943196" />
-    <state width="1877" height="155" key="GridCell.Tab.0.left" timestamp="1607272943195">
+    <state width="1877" height="155" key="GridCell.Tab.0.center/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1609187450908" />
+    <state width="1877" height="155" key="GridCell.Tab.0.left" timestamp="1609187450908">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state width="1877" height="155" key="GridCell.Tab.0.left/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1607265671493" />
-    <state width="1877" height="155" key="GridCell.Tab.0.left/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1607272943195" />
-    <state width="1877" height="155" key="GridCell.Tab.0.right" timestamp="1607272943196">
+    <state width="1877" height="155" key="GridCell.Tab.0.left/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1609187450908" />
+    <state width="1877" height="155" key="GridCell.Tab.0.right" timestamp="1609187450908">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state width="1877" height="155" key="GridCell.Tab.0.right/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1607265671494" />
-    <state width="1877" height="155" key="GridCell.Tab.0.right/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1607272943196" />
+    <state width="1877" height="155" key="GridCell.Tab.0.right/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1609187450908" />
     <state x="370" y="164" key="SettingsEditor" timestamp="1606638902158">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="370" y="164" key="SettingsEditor/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1606638902158" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/imhere_face_recognition$app.coverage" NAME="app Coverage Results" MODIFIED="1607264982197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/imhere_face_recognition$app.coverage" NAME="app Coverage Results" MODIFIED="1609182813218" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/imhere_face_recognition$main.coverage" NAME="main Coverage Results" MODIFIED="1604084003363" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
