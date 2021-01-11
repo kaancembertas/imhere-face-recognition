@@ -1,3 +1,5 @@
+# Author: Kaan Çembertaş
+# No: 200001684
 from flask import jsonify, make_response
 import json
 

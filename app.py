@@ -1,3 +1,5 @@
+# Author: Kaan Çembertaş
+# No: 200001684
 from flask import Flask, request
 from config import PATH, PORT, BACKEND_API_PATH
 import numpy as np

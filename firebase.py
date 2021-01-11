@@ -1,3 +1,5 @@
+# Author: Kaan Çembertaş
+# No: 200001684
 from firebase_admin import credentials, initialize_app, storage
 import uuid
 

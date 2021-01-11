@@ -1,3 +1,5 @@
+# Author: Kaan Çembertaş
+# No: 200001684
 import face_recognition
 from cv2 import cv2
 import numpy as np
